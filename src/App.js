@@ -4,7 +4,7 @@ import TextField from 'material-ui/TextField';
 import { List, ListItem } from 'material-ui/List'
 import Checkbox from 'material-ui/Checkbox'
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
-
+import IconButton from 'material-ui/IconButton'
 const API_URL = 'https://dawid-kurkiewicz.firebaseio.com'
 
 class App extends Component {
@@ -99,7 +99,11 @@ class App extends Component {
               key={task.id}
               primaryText={task.taskName}
               leftCheckbox={<Checkbox />}
-              rightIcon={<DeleteIcon onClick={() => this.handleDelete(task.id)} />}
+              rightIconButton={
+                <IconButton>
+                  <DeleteIcon onClick={() => this.handleDelete(task.id)} />
+                </IconButton>}
+
             />
           ))}
         </List>
