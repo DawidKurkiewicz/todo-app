@@ -14,26 +14,27 @@ class App extends Component {
     taskName: ''
   }
 
-loadData() {
-  fetch(`${API_URL}/tasks.json`)
-  .then(response => response.json())
-  .then(data => {
-    if (!data) {
-      return;
-    }
-    const array = Object.entries(data)
-    const taskList = array.map(([id, values]) => {
-      values.id = id
-      return values;
-    });
-    this.setState({ tasks: taskList })
-  })
-  
-}
+  loadData() {
+    fetch(`${API_URL}/tasks.json`)
+      .then(response => response.json())
+      .then(data => {
+        if (!data) {
+          this.setState({ tasks: [] })
+          return;
+        }
+        const array = Object.entries(data)
+        const taskList = array.map(([id, values]) => {
+          values.id = id
+          return values;
+        });
+        this.setState({ tasks: taskList })
+      })
+
+  }
 
 
   componentWillMount() {
-    this.loadData ()
+    this.loadData()
   }
 
   handleChange = (event) => {
@@ -69,13 +70,14 @@ loadData() {
     }
   }
 
-handleDelete = (id) => {
-  fetch(`${API_URL}/tasks/${id}.json`, {
-  method: 'DELETE'})
-  .then(() => {
-    this.loadData()
-  })
-}
+  handleDelete = (id) => {
+    fetch(`${API_URL}/tasks/${id}.json`, {
+      method: 'DELETE'
+    })
+      .then(() => {
+        this.loadData()
+      })
+  }
   render() {
     return (
       <div className="App">
@@ -97,7 +99,7 @@ handleDelete = (id) => {
               key={task.id}
               primaryText={task.taskName}
               leftCheckbox={<Checkbox />}
-              rightIcon={<DeleteIcon onClick={ () => this.handleDelete(task.id)} />}
+              rightIcon={<DeleteIcon onClick={() => this.handleDelete(task.id)} />}
             />
           ))}
         </List>
