@@ -16,8 +16,11 @@ class App extends Component {
       .then(response => response.json())
       .then(data => {
         const array = Object.entries(data)
-        const taskList = array.map(task => task[1]);
-        this.setState({tasks: taskList})
+        const taskList = array.map(([id, values]) => {
+          values.id = id
+          return values;
+        });
+        this.setState({ tasks: taskList })
       })
   }
 
@@ -31,14 +34,22 @@ class App extends Component {
       fetch(`${API_URL}/tasks.json`, {
         method: 'POST',
         body: JSON.stringify(newTask)
-      }).then(() => {
-        tasks.push(newTask);
-        this.setState({ tasks, taskName: '' })
       })
+        .then(response => response.json())
+        .then(data => {
+          newTask.id = data.name;
+          tasks.push(newTask)
+          this.setState({ tasks, taskName: '' })
+        })
 
     }
   }
 
+handleKeyDown = event => {
+  if(event.keyCode === 13) {
+    this.handleClick()
+  }
+}
 
 
   render() {
@@ -48,6 +59,7 @@ class App extends Component {
           <TextField
             hintText="enter your task here"
             value={this.state.taskName}
+            onKeyDown={this.handleKeyDown}
             onChange={this.handleChange}
           />
           <RaisedButton
@@ -57,8 +69,8 @@ class App extends Component {
         </div>
         <div>
 
-          {this.state.tasks.map((task, index) => (
-            <div>{task.taskName}</div>
+          {this.state.tasks.map((task) => (
+            <div key={task.id}>{task.taskName}</div>
           ))}
         </div>
       </div>
