@@ -79,16 +79,18 @@ class App extends Component {
       })
   }
 
-  handleCheck= (task) => {
+  handleCheck = (task) => {
     // task.completed = !task.completed
     // fetch(`${API_URL}/tasks/${task.id}.json`, {
     //   method: 'PUT',
     //   body: JSON.stringify(task)
     // })
-    task.completed = !task.completed
     fetch(`${API_URL}/tasks/${task.id}.json`, {
-      method: 'PUT',
-      body: JSON.stringify(task)
+      method: 'PATCH',
+      body: JSON.stringify({ completed: !task.completed })
+    })
+    .then(() => {
+      this.loadData()
     })
   }
   render() {
@@ -113,7 +115,7 @@ class App extends Component {
               primaryText={task.taskName}
               leftCheckbox=
               {<Checkbox
-              defaultChecked={task.completed}
+                defaultChecked={task.completed}
                 onCheck={() => this.handleCheck(task)} />}
               rightIconButton={
                 <IconButton>
