@@ -15,7 +15,9 @@ class App extends Component {
     fetch(`${API_URL}/tasks.json`)
       .then(response => response.json())
       .then(data => {
-        console.log('mam dane', data)
+        const array = Object.entries(data)
+        const taskList = array.map(task => task[1]);
+        this.setState({tasks: taskList})
       })
   }
 
